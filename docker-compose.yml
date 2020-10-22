@@ -1,0 +1,22 @@
+version: '3'
+services:
+  mysql:
+    image: mysql:5.7
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - LANG=C.UTF-8
+      - TZ=Asia/Shanghai
+    volumes:
+      - ./data/mysql/data:/var/lib/mysql
+      - ./data/mysql/conf/mysqld.cnf:/etc/mysql/my.cnf
+
+  confluence:
+    image: atlassian/confluence-server
+    ports:
+      - 8090:8090
+    volumes:
+      - ./data/confluence/data:/var/atlassian/application-data/confluence/
+      - ./data/confluence/lib:/opt/atlassian/confluence/confluence/WEB-INF/lib
+      - ./data/confluence/plugin/atlassian-bundled-plugins:/opt/atlassian/confluence/confluence/WEB-INF/atlassian-bundled-plugins
+    links:
+      - mysql:mysql
